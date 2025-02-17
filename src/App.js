@@ -100,7 +100,7 @@ function App() {
 
     try {
       const token = await getAuthToken();
-      const response = await fetch(`${API_URL}/event/${EVENT_ID}/addPersonFromThridParty`, {
+      const response = await fetch(`${API_URL}/event/${EVENT_ID}/addPersonFromThirdParty`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
