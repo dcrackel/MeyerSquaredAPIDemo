@@ -38,12 +38,12 @@ Authorization: Bearer <ACCESS_TOKEN>
 Before registering a user, you should check if they already exist in the system.
 
 ```
-GET /api/v1/person/email/{email}
+GET /api/v1/person/byemail/{email}
 ```
 
 ### **Example Request**
 ```
-GET https://meyer-squared-95db07154bdc.herokuapp.com/api/v1/person/email/test@test.com
+GET https://meyer-squared-95db07154bdc.herokuapp.com/api/v1/person/byemail/test@test.com
 ```
 ### Response (User Exists)
 ```
