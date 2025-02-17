@@ -1,70 +1,142 @@
-# Getting Started with Create React App
+# M² Registration API Demo
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a **demo application** designed to help **third-party services** integrate with the **M² registration system**. It provides API endpoints to **add new users** when they register for M2 events.
 
-## Available Scripts
+## Overview
+The API allows external services (such as club websites) to **search for existing users** and **add new users** to an event if they do not already exist.
 
-In the project directory, you can run:
+---
+## Authentication
 
-### `npm start`
+All API calls require **authentication using an Auth0 token**.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### **Get an Auth0 Token**
+To authenticate, request a token from:
+POST https://meyer-squared.us.auth0.com/oauth/token
+#### **Request Body**
+```json
+{
+  "client_id": "<M2M_CLIENT_ID>",
+  "client_secret": "<M2M_CLIENT_SECRET>",
+  "audience": "https://meyersquared.com",
+  "grant_type": "client_credentials"
+}
+```
+#### **Response Body**
+```
+{
+  "access_token": "eyJhbGciOiJIUzI1...",
+  "expires_in": 86400,
+  "token_type": "Bearer"
+}
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Once obtained, this token must be included in the Authorization header for all API requests:
+Authorization: Bearer <ACCESS_TOKEN>
 
-### `npm test`
+### **Look Up a Person by Email**
+Before registering a user, you should check if they already exist in the system.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+GET /api/v1/person/email/{email}
+```
 
-### `npm run build`
+### **Example Request**
+```
+GET https://meyer-squared-95db07154bdc.herokuapp.com/api/v1/person/email/test@test.com
+```
+### Response (User Exists)
+```
+{
+"PersonId": 1,
+"Email": "test@test.com",
+"DisplayName": "Bob Smith",
+"Pronouns": "He/Him",
+"FirstName": "Robert",
+"LastName": "Smith",
+"ClubId": 10
+}
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### **Response (User Not Found)**
+```
+{
+"message": "Person not found."
+}
+```
+If a user is not found, the third-party system should prompt for first name, last name, and club details before creating a new person.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Email, DisplayName, FirstName and LastName are required fields.
+ClubId is optional but recommended. It will default to "No Club" if not provided.
+Pronouns are optional. They will default to "He/Him" if not provided.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+#### **Add a New Person to an Event**
+Once you have the person's information, either as an existing user or a new one, they can be registered for an event.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+POST /api/v1/event/{eventId}/addNewPerson
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### **Example Request**
+```
+POST https://meyer-squared-95db07154bdc.herokuapp.com/api/v1/event/5/addNewPerson
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### **Request Body**
+```
+{
+"PersonId": 0, // If new, otherwise use the ID from lookup
+"Email": "Test@gmail.com",
+"DisplayName": "Bob Smith",
+"Pronouns": "He/Him",
+"FirstName": "Robert",
+"LastName": "Smoth",
+"ClubId": 17 // ID from getAllClubs lookup. 
+}
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### **Response (Success)**
+```
+{
+    "message": "Person added to event successfully"
+}
+```
 
-## Learn More
+### **Error Handling**
+The API returns standard HTTP status codes for errors.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Status Code	Meaning
+400 Bad Request	Missing or invalid parameters
+401 Unauthorized	Invalid or missing Auth0 token
+404 Not Found	Person or Event does not exist
+400 Bad Request	Missing or invalid parameters
+500 Internal Server Error	Server-side issue
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+### **Integration Steps for Third Parties**
+Request an Auth0 token.
+Check if the user exists using /api/v1/person/email/{email}.
+If the user exists, register them for the event.
+If the user does not exist, collect their first name, last name, and club, then create a new person before registering them.
+Send the registration request using /api/v1/event/{eventId}/addNewPerson.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+### **Example Flow for a Club Website**
+A fencer registers for an event on a third-party club website.
+The club website calls the M2 API to check if the person exists.
+If the person exists, the club adds them to the event.
+If the person does not exist, the club website collects additional details, creates a new person, and then adds them to the event.
+The M2 system confirms registration.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### **Ready to Integrate?**
+If you need support or have any questions, contact M2 API Support.
+📧 support@meyersquared.com
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### **📌 What This README Includes**
+✅ **Explains API Calls for Third Parties**  
+✅ **Authentication & Token Handling**  
+✅ **Step-by-Step Guide for Looking Up & Registering Users**  
+✅ **Error Handling & Expected Responses**  
+✅ **Integration Steps for External Services**

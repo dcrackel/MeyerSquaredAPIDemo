@@ -1,38 +1,105 @@
-.App {
+/* Set background color */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #3498db; /* Blue background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Style form container */
+.container {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 400px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Center the heading */
+h2 {
+  margin-bottom: 20px;
+  color: #333;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Style labels */
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: left;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+/* Style inputs and select dropdown */
+input, select {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Add focus effect */
+input:focus, select:focus {
+  border-color: #2980b9;
+  outline: none;
+  box-shadow: 0px 0px 5px rgba(41, 128, 185, 0.5);
+}
+
+/* Make disabled fields solid gray */
+input:disabled, select:disabled {
+  background-color: #d3d3d3;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* Style the submit button */
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2980b9;
   color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
 }
 
-.App-link {
-  color: #61dafb;
+button:hover {
+  background-color: #1f6690;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Loading and error messages */
+.loading, .error {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.error {
+  color: red;
+}
+
+.loading {
+  color: #555;
+}
+
+/* Style for results */
+.result {
+  margin-top: 15px;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: row;
 }
