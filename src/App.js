@@ -3,7 +3,7 @@ import { getAuthToken } from "./authService";
 import "./App.css";
 
 const API_URL = "https://meyer-squared-95db07154bdc.herokuapp.com/api/v1";
-const EVENT_ID = 25; // Change to actual event ID
+const EVENT_ID = 0; // Change to actual event ID
 
 function App() {
   const [email, setEmail] = useState("");
