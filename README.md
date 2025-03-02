@@ -119,7 +119,7 @@ Request an Auth0 token.
 Check if the user exists using /api/v1/person/email/{email}.
 If the user exists, register them for the event.
 If the user does not exist, collect their first name, last name, and club, then create a new person before registering them.
-Send the registration request using /api/v1/event/{eventId}/addNewPerson.
+Send the registration request using /api/v1/event/{eventId}/addPersonFromThirdParty.
 
 
 ### **Example Flow for a Club Website**
