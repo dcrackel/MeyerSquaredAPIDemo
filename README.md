@@ -75,12 +75,12 @@ Pronouns are optional. They will default to "He/Him" if not provided.
 Once you have the person's information, either as an existing user or a new one, they can be registered for an event.
 
 ```
-POST /api/v1/event/{eventId}/addNewPerson
+POST /api/v1/event/{eventId}/addPersonFromThirdParty
 ```
 
 ### **Example Request**
 ```
-POST https://meyer-squared-95db07154bdc.herokuapp.com/api/v1/event/5/addNewPerson
+POST https://meyer-squared-95db07154bdc.herokuapp.com/api/v1/event/5/addPersonFromThirdParty
 ```
 
 ### **Request Body**
