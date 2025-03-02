@@ -53,7 +53,7 @@ function App() {
 
     try {
       const token = await getAuthToken();
-      const response = await fetch(`${API_URL}/person/email/${email}`, {
+      const response = await fetch(`${API_URL}/person/byemail/${email}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,

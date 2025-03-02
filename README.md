@@ -38,12 +38,12 @@ Authorization: Bearer <ACCESS_TOKEN>
 Before registering a user, you should check if they already exist in the system.
 
 ```
-GET /api/v1/person/email/{email}
+GET /api/v1/person/byemail/{email}
 ```
 
 ### **Example Request**
 ```
-GET https://meyer-squared-95db07154bdc.herokuapp.com/api/v1/person/email/test@test.com
+GET https://meyer-squared-95db07154bdc.herokuapp.com/api/v1/person/byemail/test@test.com
 ```
 ### Response (User Exists)
 ```
@@ -70,6 +70,62 @@ Email, DisplayName, FirstName and LastName are required fields.
 ClubId is optional but recommended. It will default to "No Club" if not provided.
 Pronouns are optional. They will default to "He/Him" if not provided.
 
+#### **Get All Clubs**
+
+This endpoint allows third-party services to retrieve a list of all available clubs. This can be useful for populating club selection lists when registering new users.
+
+```
+GET /api/v1/club/
+```
+
+**Headers**
+
+All requests must include the following headers:
+Authorization: Bearer <ACCESS_TOKEN>
+Content-Type: application/json
+
+**Example Request**
+```
+GET https://meyer-squared-95db07154bdc.herokuapp.com/api/v1/club/
+```
+
+**Example Response**
+```
+[
+    {
+        "ClubId": 10,
+        "Name": "Columbus United Fencing Club",
+        "ShortName": "CUFC",
+        "Description": null,
+        "TagLine": "",
+        "AddressId": 5,
+        "Color1": "navy",
+        "Color2": "rose",
+        "MemberCount": 1968,
+        "HostedTournamentsCount": 1968,
+        "Images": [
+            {
+                "ImageId": 55,
+                "URL": "https://meyersquaredimages.com/images/clubs/cufc.png",
+                "AltText": null,
+                "Type": "Club",
+                "EntityId": 10,
+                "EntityType": "Club"
+            }
+        ],
+        "Address": {
+            "AddressId": 5,
+            "Name": "Columbus United Fencing Club",
+            "Address1": "6475 E Main St Suite #111",
+            "Address2": null,
+            "City": "Reynoldsburg",
+            "State": "OH",
+            "Zip": 43068,
+            "Coordinates": "39.953315,-82.9068263"
+        }
+    },
+]
+```
 
 #### **Add a New Person to an Event**
 Once you have the person's information, either as an existing user or a new one, they can be registered for an event.
@@ -119,8 +175,8 @@ Request an Auth0 token.
 Check if the user exists using /api/v1/person/email/{email}.
 If the user exists, register them for the event.
 If the user does not exist, collect their first name, last name, and club, then create a new person before registering them.
-Send the registration request using /api/v1/event/{eventId}/addPersonFromThirdParty.
-
+Send the registration request using /api/v1/event/{eventId}/addNewPerson.
+``
 
 ### **Example Flow for a Club Website**
 A fencer registers for an event on a third-party club website.
